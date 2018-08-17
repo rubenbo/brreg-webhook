@@ -71,13 +71,13 @@ def nrof(parameters,language):
             speech = speech+"Name: "+enhet['navn']+" Org.Nr: "+enhet['organisasjonsnummer']+"\n\n"
 
     return {
-        "messages": [
+        "fulfillmentText": speech,
+        "fulfillmentMessages": [
             {
                 "speech": speech,
                 "type": 0
             }],
-            "fulfillmentText": speech,
-            "source": "brreg-webhook-nrof"
+        "source": "brreg-webhook-nrof"
         }
 
 if __name__ == '__main__':
