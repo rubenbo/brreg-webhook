@@ -26,7 +26,7 @@ def makeResponse(req):
     result = req.get("queryResult")
     parameters = result.get("parameters")
     orgnr = parameters.get("orgnr")    
-    r = requests.get('https://data.brreg.no/enhetsregisteret/api/enheter/'+orgnr)
+    r = requests.get('https://data.brreg.no/enhetsregisteret/api/enheter/'+str(round(orgnr)))
     json_object = r.json()
     speech = "The name of "+orgnr+" is "+json_object['navn']
     return {
