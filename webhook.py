@@ -25,7 +25,7 @@ def webhook():
 def makeResponse(req):
     result = req.get("queryResult")
     parameters = result.get("parameters")
-    action = parameters.get("action")
+    action = result.get("action")
     if action == "nameof":
         res = nameof(parameters)
     elif action == "nrof":
