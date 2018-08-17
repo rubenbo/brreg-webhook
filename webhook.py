@@ -25,6 +25,16 @@ def webhook():
 def makeResponse(req):
     result = req.get("queryResult")
     parameters = result.get("parameters")
+    action = parameters.get("action")
+    if action == "nameof":
+        res = nameof(parameters)
+    elif action == "nrof":
+        res = nrof(paramters)
+    else:
+        raise ValueError("unknown action: "+action)
+    return res
+
+def nameof(parameters):
     orgnr = parameters.get("orgnr")
     orgnrstr = str(int(orgnr))
     r = requests.get('https://data.brreg.no/enhetsregisteret/api/enheter/'+orgnrstr)
@@ -37,6 +47,20 @@ def makeResponse(req):
     return {
     "fulfillmentText": speech,
     "source": "brreg-webhook-nameof"
+    }
+
+def nrof(parameters):
+    name = parameters.get("org-name")
+    r = requests.get('https://data.brreg.no/enhetsregisteret/api/enheter?navn='+name)
+    json_object = r.json()
+    enheter = json_object['_embedded']['enheter']
+    speech = "I found the following results: "
+    for enhet in enheter:
+        speech = speech+"Name: "+enhet['navn']+" Org.Nr: "+enhet['organisasjonsnummer']+"\n"
+
+    return {
+    "fulfillmentText": speech,
+    "source": "brreg-webhook-nrof"
     }
 
 if __name__ == '__main__':
