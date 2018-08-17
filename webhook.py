@@ -26,37 +26,49 @@ def makeResponse(req):
     result = req.get("queryResult")
     parameters = result.get("parameters")
     action = result.get("action")
+    language = result.get("languageCode")
     if action == "nameof":
-        res = nameof(parameters)
+        res = nameof(parameters,language)
     elif action == "nrof":
-        res = nrof(parameters)
+        res = nrof(parameters,language)
     else:
         raise ValueError("unknown action: "+action)
     return res
 
-def nameof(parameters):
+def nameof(parameters,language):
     orgnr = parameters.get("orgnr")
     orgnrstr = str(int(orgnr))
     r = requests.get('https://data.brreg.no/enhetsregisteret/api/enheter/'+orgnrstr)
     json_object = r.json()
     if 'navn' in json_object:
-        speech = "The name of "+orgnrstr+" is "+json_object['navn']
+        if language=="no":
+            speech = "Navnet på organisasjon "+orgnrstr+" er "+json_object['navn']
+        else:
+            speech = "The name of "+orgnrstr+" is "+json_object['navn']
     else:
-        speech = "No organisation found with orgnr: "+orgnrstr
+        if language=="no":
+            speech = "Fant ikke noen organisasjon med orgnr "+orgnrstr
+        else:
+            speech = "No organisation found with orgnr: "+orgnrstr
 
     return {
     "fulfillmentText": speech,
     "source": "brreg-webhook-nameof"
     }
 
-def nrof(parameters):
+def nrof(parameters,language):
     name = parameters.get("org-name")
     r = requests.get('https://data.brreg.no/enhetsregisteret/api/enheter?navn='+name)
     json_object = r.json()
     enheter = json_object['_embedded']['enheter']
-    speech = "I found the following results: "
-    for enhet in enheter:
-        speech = speech+"Name: "+enhet['navn']+" Org.Nr: "+enhet['organisasjonsnummer']+"\n"
+    if language=="no":
+        speech = "Jeg fant følgende resultater: <br/><br/>"
+        for enhet in enheter:
+            speech = speech+"Navn: "+enhet['navn']+" Org.Nr: "+enhet['organisasjonsnummer']+"\n"+"<br/>"
+    else:
+        speech = "I found the following results: <br/><br/>"
+        for enhet in enheter:
+            speech = speech+"Name: "+enhet['navn']+" Org.Nr: "+enhet['organisasjonsnummer']+"\n"+"<br/>"
 
     return {
     "fulfillmentText": speech,
