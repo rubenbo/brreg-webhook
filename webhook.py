@@ -29,7 +29,11 @@ def makeResponse(req):
     orgnrstr = str(int(orgnr))
     r = requests.get('https://data.brreg.no/enhetsregisteret/api/enheter/'+orgnrstr)
     json_object = r.json()
-    speech = "The name of "+orgnrstr+" is "+json_object['navn']
+    if 'navn' in json_object:
+        speech = "The name of "+orgnrstr+" is "+json_object['navn']
+    else:
+        speech = "No organisation found with orgnr: "+orgnrstr
+
     return {
     "fulfillmentText": speech,
     "source": "brreg-webhook-nameof"
