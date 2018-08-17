@@ -29,7 +29,7 @@ def makeResponse(req):
     if action == "nameof":
         res = nameof(parameters)
     elif action == "nrof":
-        res = nrof(paramters)
+        res = nrof(parameters)
     else:
         raise ValueError("unknown action: "+action)
     return res
