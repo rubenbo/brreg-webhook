@@ -74,9 +74,11 @@ def nrof(parameters,language):
         "fulfillmentText": speech,
         "fulfillmentMessages": [
             {
-                "speech": speech,
-                "type": 0
-            }],
+                "text": {
+                    "text": [speech]
+                }
+            } 
+            ],
         "source": "brreg-webhook-nrof"
         }
 
