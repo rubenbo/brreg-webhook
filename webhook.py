@@ -23,15 +23,14 @@ def webhook():
     return r
 
 def makeResponse(req):
-    result = req.get("result")
+    result = req.get("queryResult")
     parameters = result.get("parameters")
     orgnr = parameters.get("orgnr")    
     r = requests.get('https://data.brreg.no/enhetsregisteret/api/enheter/'+orgnr)
     json_object = r.json()
     speech = "The name of "+orgnr+" is "+json_object['navn']
     return {
-    "speech": speech,
-    "displayText": speech,
+    "fulfillmentText": speech,
     "source": "brreg-webhook-nameof"
     }
 
