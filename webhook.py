@@ -62,13 +62,13 @@ def nrof(parameters,language):
     json_object = r.json()
     enheter = json_object['_embedded']['enheter']
     if language=="no":
-        speech = "Jeg fant følgende resultater: <br/><br/>"
+        speech = "Jeg fant følgende resultater: \n\n\n\n"
         for enhet in enheter:
-            speech = speech+"Navn: "+enhet['navn']+" Org.Nr: "+enhet['organisasjonsnummer']+"\n"+"<br/>"
+            speech = speech+"Navn: "+enhet['navn']+" Org.Nr: "+enhet['organisasjonsnummer']+"\n\n"
     else:
         speech = "I found the following results: <br/><br/>"
         for enhet in enheter:
-            speech = speech+"Name: "+enhet['navn']+" Org.Nr: "+enhet['organisasjonsnummer']+"\n"+"<br/>"
+            speech = speech+"Name: "+enhet['navn']+" Org.Nr: "+enhet['organisasjonsnummer']+"\n\n"
 
     return {
     "fulfillmentText": speech,
