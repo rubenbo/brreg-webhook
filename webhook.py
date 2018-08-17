@@ -66,14 +66,19 @@ def nrof(parameters,language):
         for enhet in enheter:
             speech = speech+"Navn: "+enhet['navn']+" Org.Nr: "+enhet['organisasjonsnummer']+"\n\n"
     else:
-        speech = "I found the following results: <br/><br/>"
+        speech = "I found the following results: \n\n\n\n"
         for enhet in enheter:
             speech = speech+"Name: "+enhet['navn']+" Org.Nr: "+enhet['organisasjonsnummer']+"\n\n"
 
     return {
-    "fulfillmentText": speech,
-    "source": "brreg-webhook-nrof"
-    }
+        "messages": [
+            {
+                "speech": speech,
+                "type": 0
+            }],
+            "fulfillmentText": speech,
+            "source": "brreg-webhook-nrof"
+        }
 
 if __name__ == '__main__':
     port = int(os.getenv('PORT', 5000))
